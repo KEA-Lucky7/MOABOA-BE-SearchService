@@ -19,9 +19,14 @@ public class QMemberEntity extends EntityPathBase<MemberEntity> {
 
     public static final QMemberEntity memberEntity = new QMemberEntity("memberEntity");
 
+    public final kea.project.searchservice.global.common.entity.QBaseEntity _super = new kea.project.searchservice.global.common.entity.QBaseEntity(this);
+
     public final StringPath about = createString("about");
 
     public final DatePath<java.time.LocalDate> birth = createDate("birth", java.time.LocalDate.class);
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
@@ -34,6 +39,9 @@ public class QMemberEntity extends EntityPathBase<MemberEntity> {
     public final StringPath socialId = createString("socialId");
 
     public final StringPath socialType = createString("socialType");
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> updatedAt = _super.updatedAt;
 
     public QMemberEntity(String variable) {
         super(MemberEntity.class, forVariable(variable));

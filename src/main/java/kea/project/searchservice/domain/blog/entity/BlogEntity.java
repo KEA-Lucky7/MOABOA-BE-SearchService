@@ -2,11 +2,9 @@ package kea.project.searchservice.domain.blog.entity;
 
 import jakarta.persistence.*;
 import kea.project.searchservice.domain.blog.vo.BlogEntityState;
+import kea.project.searchservice.domain.member.entity.MemberEntity;
 import kea.project.searchservice.global.common.entity.BaseEntity;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 @Entity()
 @Table(name = "BLOG")
@@ -19,8 +17,9 @@ public class BlogEntity extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "member_id")
-    private Long memberId;
+    @ManyToOne
+    @JoinColumn(name="member_id")
+    private MemberEntity member;
 
     @Column(name = "about")
     private String about;
@@ -34,4 +33,27 @@ public class BlogEntity extends BaseEntity {
     @Column(name = "state")
     @Enumerated(EnumType.STRING)
     private BlogEntityState blogEntityState;
+
+    @Builder
+    public BlogEntity(MemberEntity member, String about, String name, String headerImage, BlogEntityState blogEntityState) {
+        this.member = member;
+        this.about = about;
+        this.name = name;
+        this.headerImage = headerImage;
+        this.blogEntityState = blogEntityState;
+    }
+    public static BlogEntity of(MemberEntity member, String about, String name, String headerImage,BlogEntityState blogEntityState) {
+        return BlogEntity.builder()
+                .member(member)
+                .about(about)
+                .name(name)
+                .headerImage(headerImage)
+                .blogEntityState(blogEntityState)
+                .build();
+    }
+
+    public BlogEntity updateName(String blogName) {
+        this.name = blogName;
+        return null;
+    }
 }

@@ -19,9 +19,14 @@ public class QPostEntity extends EntityPathBase<PostEntity> {
 
     public static final QPostEntity postEntity = new QPostEntity("postEntity");
 
+    public final kea.project.searchservice.global.common.entity.QBaseEntity _super = new kea.project.searchservice.global.common.entity.QBaseEntity(this);
+
     public final NumberPath<Long> blogId = createNumber("blogId", Long.class);
 
     public final StringPath content = createString("content");
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
@@ -36,6 +41,9 @@ public class QPostEntity extends EntityPathBase<PostEntity> {
     public final StringPath thumbnail = createString("thumbnail");
 
     public final StringPath title = createString("title");
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> updatedAt = _super.updatedAt;
 
     public QPostEntity(String variable) {
         super(PostEntity.class, forVariable(variable));
