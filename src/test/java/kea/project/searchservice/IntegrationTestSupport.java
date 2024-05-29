@@ -37,8 +37,8 @@ public abstract class IntegrationTestSupport {
 
     @AfterEach
     void tearDown() {
-        blogJPARepository.deleteAllInBatch();
         postJPARepository.deleteAllInBatch();
+        blogJPARepository.deleteAllInBatch();
         memberJPARepository.deleteAllInBatch();
     }
 }

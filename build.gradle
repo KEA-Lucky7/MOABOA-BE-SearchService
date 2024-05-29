@@ -52,6 +52,10 @@ jar {
     enabled = false
 }
 
+test {
+    useJUnitPlatform()
+}
+
 def generated = 'src/main/generated'
 
 sourceSets {

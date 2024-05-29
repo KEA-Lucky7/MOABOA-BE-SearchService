@@ -3,6 +3,7 @@ package kea.project.searchservice.domain.post.entity;
 import jakarta.persistence.*;
 import kea.project.searchservice.domain.post.vo.PostEntityState;
 import kea.project.searchservice.domain.post.vo.PostEntityType;
+import kea.project.searchservice.global.common.entity.BaseEntity;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "POST")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class PostEntity {
+public class PostEntity extends BaseEntity {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
