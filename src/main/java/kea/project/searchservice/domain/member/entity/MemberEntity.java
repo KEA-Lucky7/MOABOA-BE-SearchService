@@ -2,6 +2,7 @@ package kea.project.searchservice.domain.member.entity;
 
 import com.fasterxml.jackson.databind.ser.Serializers;
 import jakarta.persistence.*;
+import kea.project.searchservice.domain.blog.entity.BlogEntity;
 import kea.project.searchservice.domain.member.vo.MemberEntityState;
 import kea.project.searchservice.global.common.entity.BaseEntity;
 import lombok.AccessLevel;
@@ -23,6 +24,9 @@ public class MemberEntity extends BaseEntity {
 
     @Column(name = "birth")
     private LocalDate birth;
+
+    @OneToOne
+    private BlogEntity blog;
 
     @Column(name = "about")
     private String about;
@@ -54,14 +58,20 @@ public class MemberEntity extends BaseEntity {
         this.memberEntityState = memberEntityState;
     }
 
-    public static MemberEntity of(LocalDate birth, String about, String nickname, String profileImage, String socialId, String socialType) {
-        return  MemberEntity.builder()
+    public static MemberEntity of(LocalDate birth, String about, String nickname, String profileImage, String socialId, String socialType, MemberEntityState memberEntityState) {
+        return MemberEntity.builder()
                 .birth(birth)
                 .about(about)
                 .nickname(nickname)
                 .profileImage(profileImage)
                 .socialId(socialId)
                 .socialType(socialType)
+                .memberEntityState(memberEntityState)
                 .build();
+    }
+
+    public void updateNickname(String nickname) {
+        this.nickname = nickname;
+
     }
 }

@@ -1,8 +1,10 @@
 package kea.project.searchservice.api.controller;
 
 import kea.project.searchservice.api.controller.dto.BlogSearchResponse;
+import kea.project.searchservice.api.controller.dto.MemberSearchResponse;
 import kea.project.searchservice.api.service.SearchService;
 import kea.project.searchservice.api.service.dto.BlogSearchDto;
+import kea.project.searchservice.api.service.dto.MemberSearchDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -21,5 +23,10 @@ public class SearchController {
     @GetMapping(value = "/blog")
     public ResponseEntity<Page<BlogSearchResponse>> blogSearch(@RequestParam String value, @RequestParam Integer page, @RequestParam Integer size) {
         return ResponseEntity.ok(searchService.blogSearch(BlogSearchDto.of(value, size, page)));
+    }
+
+    @GetMapping(value = "/member")
+    public ResponseEntity<Page<MemberSearchResponse>> memberSearch(@RequestParam String value, @RequestParam Integer page, @RequestParam Integer size) {
+        return ResponseEntity.ok(searchService.memberSearch(MemberSearchDto.of(value, size, page)));
     }
 }
