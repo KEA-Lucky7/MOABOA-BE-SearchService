@@ -17,7 +17,7 @@ public class BlogEntity extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name="member_id")
     private MemberEntity member;
 

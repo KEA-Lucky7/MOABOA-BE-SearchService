@@ -60,7 +60,7 @@ public class QBlogEntity extends EntityPathBase<BlogEntity> {
 
     public QBlogEntity(Class<? extends BlogEntity> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.member = inits.isInitialized("member") ? new kea.project.searchservice.domain.member.entity.QMemberEntity(forProperty("member")) : null;
+        this.member = inits.isInitialized("member") ? new kea.project.searchservice.domain.member.entity.QMemberEntity(forProperty("member"), inits.get("member")) : null;
     }
 
 }
