@@ -1,10 +1,13 @@
 package kea.project.searchservice.domain.post.entity;
 
 import jakarta.persistence.*;
+import kea.project.searchservice.domain.blog.entity.BlogEntity;
+import kea.project.searchservice.domain.member.entity.MemberEntity;
 import kea.project.searchservice.domain.post.vo.PostEntityState;
 import kea.project.searchservice.domain.post.vo.PostEntityType;
 import kea.project.searchservice.global.common.entity.BaseEntity;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -18,29 +21,61 @@ public class PostEntity extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name="member_id")
-    private Long memberId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private MemberEntity member;
 
-    @Column(name="blog_id")
-    private Long blogId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "blog_id")
+    private BlogEntity blog;
 
-    @Column(name="post_type")
+    @Column(name = "post_type")
     @Enumerated(EnumType.STRING)
     private PostEntityType postEntityType;
 
-    @Column(name="title")
+    @Column(name = "title")
     private String title;
 
-    @Column(name="content")
+    @Column(name = "content")
     private String content;
 
-    @Column(name="thumbnail")
+    @Column(name = "preview")
+    private String preview;
+
+    @Column(name = "thumbnail")
+    @Lob
     private String thumbnail;
 
-    @Column(name="main_hashtah")
+    @Column(name = "main_hashtag")
     private String mainHashtag;
 
-    @Column(name="post_state")
+    @Column(name = "post_state")
     @Enumerated(EnumType.STRING)
     private PostEntityState postState;
+
+    @Builder
+    public PostEntity(MemberEntity member, BlogEntity blog, PostEntityType postEntityType, String title, String content, String preview, String thumbnail, String mainHashtag, PostEntityState postState) {
+        this.member = member;
+        this.blog = blog;
+        this.postEntityType = postEntityType;
+        this.title = title;
+        this.content = content;
+        this.preview = preview;
+        this.thumbnail = thumbnail;
+        this.mainHashtag = mainHashtag;
+        this.postState = postState;
+    }
+    public static PostEntity of(MemberEntity member, BlogEntity blog, PostEntityType postEntityType, String title, String content, String preview, String thumbnail, String mainHashtag, PostEntityState postState) {
+        return PostEntity.builder()
+                .member(member)
+                .blog(blog)
+                .postEntityType(postEntityType)
+                .title(title)
+                .content(content)
+                .preview(preview)
+                .thumbnail(thumbnail)
+                .mainHashtag(mainHashtag)
+                .postState(postState)
+                .build();
+    }
 }
