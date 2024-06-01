@@ -7,6 +7,7 @@ import kea.project.searchservice.domain.member.repository.MemberCustomRepository
 import kea.project.searchservice.domain.member.repository.MemberJPARepository;
 import kea.project.searchservice.domain.post.repository.PostCustomRepository;
 import kea.project.searchservice.domain.post.repository.PostJPARepository;
+import kea.project.searchservice.domain.post.repository.PostLikeJPARepository;
 import org.junit.jupiter.api.AfterEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -35,8 +36,11 @@ public abstract class IntegrationTestSupport {
     @Autowired
     protected MemberCustomRepository memberCustomRepository;
 
+    @Autowired
+    protected PostLikeJPARepository postLikeJPARepository;
     @AfterEach
     void tearDown() {
+        postLikeJPARepository.deleteAllInBatch();
         postJPARepository.deleteAllInBatch();
         blogJPARepository.deleteAllInBatch();
         memberJPARepository.deleteAllInBatch();

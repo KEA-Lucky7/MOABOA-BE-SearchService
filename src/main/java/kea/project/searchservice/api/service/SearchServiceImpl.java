@@ -2,8 +2,10 @@ package kea.project.searchservice.api.service;
 
 import kea.project.searchservice.api.controller.dto.BlogSearchResponse;
 import kea.project.searchservice.api.controller.dto.MemberSearchResponse;
+import kea.project.searchservice.api.controller.dto.PostSearchResponse;
 import kea.project.searchservice.api.service.dto.BlogSearchDto;
 import kea.project.searchservice.api.service.dto.MemberSearchDto;
+import kea.project.searchservice.api.service.dto.PostSearchDto;
 import kea.project.searchservice.domain.blog.repository.BlogCustomRepository;
 import kea.project.searchservice.domain.blog.repository.BlogJPARepository;
 import kea.project.searchservice.domain.member.repository.MemberCustomRepository;
@@ -37,5 +39,10 @@ public class SearchServiceImpl implements SearchService {
     public Page<MemberSearchResponse> memberSearch(MemberSearchDto dto) {
         Pageable pageable = PageRequest.of(dto.getPage(), dto.getSize(), Sort.by(Sort.Direction.DESC, "updated_at"));
         return memberCustomRepository.search(dto.getValue(), pageable);
+    }
+
+    @Override
+    public Page<PostSearchResponse> postSearch(PostSearchDto dto) {
+        return postCustomRepository.search(dto);
     }
 }
