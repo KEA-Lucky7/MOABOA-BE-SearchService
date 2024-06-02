@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class SearchControllerTest extends ControllerTestSupport {
@@ -58,7 +59,9 @@ class SearchControllerTest extends ControllerTestSupport {
                         .param("size", String.valueOf(size))
                         .param("startDate", startDate.toString())
                         .param("endDate", endDate.toString())
-                        .param("orderType", orderType.toString())
-        ).andExpect(status().isOk());
+                        .param("order", orderType.toString())
+        )
+                .andDo(print())
+                .andExpect(status().isOk());
     }
 }
