@@ -25,7 +25,7 @@ public class MemberEntity extends BaseEntity {
     @Column(name = "birth")
     private LocalDate birth;
 
-    @OneToOne
+    @OneToOne(mappedBy = "member")
     private BlogEntity blog;
 
     @Column(name = "about")

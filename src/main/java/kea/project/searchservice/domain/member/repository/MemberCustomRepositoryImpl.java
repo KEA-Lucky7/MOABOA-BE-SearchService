@@ -17,7 +17,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Objects;
 
+import static kea.project.searchservice.domain.blog.entity.QBlogEntity.blogEntity;
 import static kea.project.searchservice.domain.member.entity.QMemberEntity.memberEntity;
+import static kea.project.searchservice.domain.post.entity.QPostEntity.postEntity;
 
 @Slf4j
 @Repository
@@ -37,6 +39,7 @@ public class MemberCustomRepositoryImpl implements MemberCustomRepository {
                         memberEntity.profileImage
                 ))
                 .from(memberEntity)
+                .leftJoin(memberEntity.blog,blogEntity)
                 .where(
                         memberEntity.memberEntityState.eq(MemberEntityState.ACTIVE).and(
                                 memberEntity.nickname.contains(value)).and(memberEntity.memberEntityRole.eq(MemberEntityRole.MEMBER))
@@ -47,6 +50,7 @@ public class MemberCustomRepositoryImpl implements MemberCustomRepository {
         Long count = jpaQueryFactory
                 .select(memberEntity.count())
                 .from(memberEntity)
+                .leftJoin(memberEntity.blog,blogEntity)
                 .where(
                         memberEntity.memberEntityState.eq(MemberEntityState.ACTIVE).and(
                                         memberEntity.nickname.contains(value))

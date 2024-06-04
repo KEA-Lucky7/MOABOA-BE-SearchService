@@ -239,7 +239,6 @@ class SearchServiceTest extends IntegrationTestSupport {
         MemberEntity memberEntity2 = memberJPARepository.saveAndFlush(createMemberEntity("Name2"));
         blogJPARepository.saveAndFlush(createBlogEntity("바람_블로그2", "요 블로그는 미래", memberEntity2));
         MemberEntity memberEntity3 = memberJPARepository.saveAndFlush(createMemberEntity("Name3"));
-        blogJPARepository.saveAndFlush(createBlogEntity("별_블로그3", "내 블로그는 꿈", memberEntity3));
         memberEntity2.updateNickname("updateName");
         memberJPARepository.saveAndFlush(memberEntity2);
         MemberSearchDto memberSearchDto = MemberSearchDto.of("Name", 10, 0);
