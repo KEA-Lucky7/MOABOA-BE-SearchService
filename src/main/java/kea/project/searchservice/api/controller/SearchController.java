@@ -41,8 +41,6 @@ public class SearchController {
                                                                @RequestParam Integer size, @RequestParam OrderType order,
                                                                @DateTimeFormat(pattern = "yyyy-MM-dd") @RequestParam LocalDate startDate,
                                                                @DateTimeFormat(pattern = "yyyy-MM-dd") @RequestParam LocalDate endDate) {
-        System.out.println(startDate);
-        System.out.println(endDate);
         return ResponseEntity.ok(searchService.postSearch(PostSearchDto.of(value, size, page, order, startDate, endDate)));
     }
 }
