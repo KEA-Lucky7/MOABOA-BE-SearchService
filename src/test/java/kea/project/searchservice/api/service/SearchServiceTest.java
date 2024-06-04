@@ -12,6 +12,7 @@ import kea.project.searchservice.domain.blog.entity.BlogEntity;
 import kea.project.searchservice.domain.blog.vo.BlogEntityState;
 import kea.project.searchservice.domain.member.entity.MemberEntity;
 import kea.project.searchservice.domain.member.vo.MemberEntityState;
+import kea.project.searchservice.domain.member.vo.MemberEntityRole;
 import kea.project.searchservice.domain.post.entity.PostEntity;
 import kea.project.searchservice.domain.post.entity.PostLikeEntity;
 import kea.project.searchservice.domain.post.vo.PostEntityState;
@@ -238,7 +239,6 @@ class SearchServiceTest extends IntegrationTestSupport {
         MemberEntity memberEntity2 = memberJPARepository.saveAndFlush(createMemberEntity("Name2"));
         blogJPARepository.saveAndFlush(createBlogEntity("바람_블로그2", "요 블로그는 미래", memberEntity2));
         MemberEntity memberEntity3 = memberJPARepository.saveAndFlush(createMemberEntity("Name3"));
-        blogJPARepository.saveAndFlush(createBlogEntity("별_블로그3", "내 블로그는 꿈", memberEntity3));
         memberEntity2.updateNickname("updateName");
         memberJPARepository.saveAndFlush(memberEntity2);
         MemberSearchDto memberSearchDto = MemberSearchDto.of("Name", 10, 0);
@@ -262,13 +262,13 @@ class SearchServiceTest extends IntegrationTestSupport {
         String title = "하늘의 제목";
         String preview = "새의 꿈";
         String content = "땅의 본문";
-        PostEntity postEntity1 = postJPARepository.save(createPostEntity(memberEntity, blogEntity, title, content,preview));
-        postJPARepository.save(createPostEntity(memberEntity, blogEntity, "Wrong", "another","preview"));
-        postJPARepository.save(createPostEntity(memberEntity, blogEntity, "Wrong2", "another2","preview2"));
+        PostEntity postEntity1 = postJPARepository.save(createPostEntity(memberEntity, blogEntity, title, content, preview));
+        postJPARepository.save(createPostEntity(memberEntity, blogEntity, "Wrong", "another", "preview"));
+        postJPARepository.save(createPostEntity(memberEntity, blogEntity, "Wrong2", "another2", "preview2"));
         PostSearchDto dto = PostSearchDto.of("늘의", 10, 0, OrderType.latestASC, postEntity1.getCreatedAt().toLocalDate().minusMonths(1), postEntity1.getUpdatedAt().toLocalDate().plusMonths(1));
 
         //when
-        Page<PostSearchResponse> result  = searchService.postSearch(dto);
+        Page<PostSearchResponse> result = searchService.postSearch(dto);
         System.out.println(result.getContent());
         //then
         assertThat(result.getTotalElements()).isEqualTo(1);
@@ -284,13 +284,13 @@ class SearchServiceTest extends IntegrationTestSupport {
         String title = "하늘의 제목";
         String preview = "새의 꿈";
         String content = "땅의 본문";
-        PostEntity postEntity1 = postJPARepository.save(createPostEntity(memberEntity, blogEntity, title, content,preview));
-        postJPARepository.save(createPostEntity(memberEntity, blogEntity, "Wrong", "another","preview"));
-        postJPARepository.save(createPostEntity(memberEntity, blogEntity, "Wrong2", "another2","preview2"));
+        PostEntity postEntity1 = postJPARepository.save(createPostEntity(memberEntity, blogEntity, title, content, preview));
+        postJPARepository.save(createPostEntity(memberEntity, blogEntity, "Wrong", "another", "preview"));
+        postJPARepository.save(createPostEntity(memberEntity, blogEntity, "Wrong2", "another2", "preview2"));
         PostSearchDto dto = PostSearchDto.of("의 본", 10, 0, OrderType.latestASC, postEntity1.getCreatedAt().toLocalDate().minusMonths(1), postEntity1.getUpdatedAt().toLocalDate().plusMonths(1));
 
         //when
-        Page<PostSearchResponse> result  = searchService.postSearch(dto);
+        Page<PostSearchResponse> result = searchService.postSearch(dto);
         System.out.println(result.getContent());
         //then
         assertThat(result.getTotalElements()).isEqualTo(1);
@@ -303,13 +303,13 @@ class SearchServiceTest extends IntegrationTestSupport {
         //given
         MemberEntity memberEntity = memberJPARepository.saveAndFlush(createMemberEntity("Name1"));
         BlogEntity blogEntity = blogJPARepository.save(createBlogEntity("dongseok_blog", "dongseok_blog_about", memberEntity));
-        PostEntity postEntity1 = postJPARepository.save(createPostEntity(memberEntity, blogEntity, "title1", "content1","preview1"));
-        postJPARepository.save(createPostEntity(memberEntity, blogEntity, "title2", "content2","preview2"));
-        postJPARepository.save(createPostEntity(memberEntity, blogEntity, "title3", "content3","preview3"));
+        PostEntity postEntity1 = postJPARepository.save(createPostEntity(memberEntity, blogEntity, "title1", "content1", "preview1"));
+        postJPARepository.save(createPostEntity(memberEntity, blogEntity, "title2", "content2", "preview2"));
+        postJPARepository.save(createPostEntity(memberEntity, blogEntity, "title3", "content3", "preview3"));
         PostSearchDto dto = PostSearchDto.of("title", 10, 0, OrderType.latestASC, postEntity1.getCreatedAt().toLocalDate().minusMonths(1), postEntity1.getUpdatedAt().toLocalDate().plusMonths(1));
 
         //when
-        Page<PostSearchResponse> result  = searchService.postSearch(dto);
+        Page<PostSearchResponse> result = searchService.postSearch(dto);
 
         //then
         assertThat(result.getTotalElements()).isEqualTo(3);
@@ -326,19 +326,19 @@ class SearchServiceTest extends IntegrationTestSupport {
         MemberEntity memberEntity2 = memberJPARepository.saveAndFlush(createMemberEntity("Name2"));
         MemberEntity memberEntity3 = memberJPARepository.saveAndFlush(createMemberEntity("Name3"));
         BlogEntity blogEntity = blogJPARepository.save(createBlogEntity("dongseok_blog", "dongseok_blog_about", memberEntity1));
-        PostEntity postEntity1 = postJPARepository.save(createPostEntity(memberEntity1, blogEntity, "title1", "content1","preview1"));
-        PostEntity postEntity2 = postJPARepository.save(createPostEntity(memberEntity1, blogEntity, "title2", "content2","preview2"));
-        PostEntity postEntity3 = postJPARepository.save(createPostEntity(memberEntity1, blogEntity, "title3", "content3","preview3"));
-        postLikeJPARepository.save(createPostLikeEntity(memberEntity1,postEntity1));
-        postLikeJPARepository.save(createPostLikeEntity(memberEntity1,postEntity2));
-        postLikeJPARepository.save(createPostLikeEntity(memberEntity1,postEntity3));
-        postLikeJPARepository.save(createPostLikeEntity(memberEntity2,postEntity2));
-        postLikeJPARepository.save(createPostLikeEntity(memberEntity2,postEntity3));
-        postLikeJPARepository.save(createPostLikeEntity(memberEntity3,postEntity2));
+        PostEntity postEntity1 = postJPARepository.save(createPostEntity(memberEntity1, blogEntity, "title1", "content1", "preview1"));
+        PostEntity postEntity2 = postJPARepository.save(createPostEntity(memberEntity1, blogEntity, "title2", "content2", "preview2"));
+        PostEntity postEntity3 = postJPARepository.save(createPostEntity(memberEntity1, blogEntity, "title3", "content3", "preview3"));
+        postLikeJPARepository.save(createPostLikeEntity(memberEntity1, postEntity1));
+        postLikeJPARepository.save(createPostLikeEntity(memberEntity1, postEntity2));
+        postLikeJPARepository.save(createPostLikeEntity(memberEntity1, postEntity3));
+        postLikeJPARepository.save(createPostLikeEntity(memberEntity2, postEntity2));
+        postLikeJPARepository.save(createPostLikeEntity(memberEntity2, postEntity3));
+        postLikeJPARepository.save(createPostLikeEntity(memberEntity3, postEntity2));
         PostSearchDto dto = PostSearchDto.of("title", 10, 0, OrderType.likeDESC, postEntity1.getCreatedAt().toLocalDate().minusMonths(1), postEntity1.getUpdatedAt().toLocalDate().plusMonths(1));
 
         //when
-        Page<PostSearchResponse> result  = searchService.postSearch(dto);
+        Page<PostSearchResponse> result = searchService.postSearch(dto);
 
         //then
         assertThat(result.getTotalElements()).isEqualTo(3);
@@ -347,13 +347,13 @@ class SearchServiceTest extends IntegrationTestSupport {
                 .containsExactly("title2", "title3", "title1");
     }
 
-    private PostEntity createPostEntity(MemberEntity memberEntity, BlogEntity blogEntity, String title, String content,String preview) {
+    private PostEntity createPostEntity(MemberEntity memberEntity, BlogEntity blogEntity, String title, String content, String preview) {
         return PostEntity.of(memberEntity, blogEntity, PostEntityType.FREE, title, content, preview, "thumbnail", "hashtag", PostEntityState.ACTIVE);
     }
 
     private MemberEntity createMemberEntity(String nickname) {
         LocalDate Birthday = LocalDate.of(1999, 8, 20);
-        return MemberEntity.of(Birthday, "about", nickname, "image.png", "123", "GOOGLE", MemberEntityState.ACTIVE);
+        return MemberEntity.of(Birthday, "about", nickname, "image.png", "123", "GOOGLE", MemberEntityState.ACTIVE, MemberEntityRole.MEMBER);
     }
 
     private BlogEntity createBlogEntity(String blogName, String about, MemberEntity memberEntity) {
@@ -361,6 +361,6 @@ class SearchServiceTest extends IntegrationTestSupport {
     }
 
     private PostLikeEntity createPostLikeEntity(MemberEntity memberEntity, PostEntity postEntity) {
-        return PostLikeEntity.of(memberEntity,postEntity);
+        return PostLikeEntity.of(memberEntity, postEntity);
     }
 }

@@ -1,8 +1,8 @@
 package kea.project.searchservice.domain.member.entity;
 
-import com.fasterxml.jackson.databind.ser.Serializers;
 import jakarta.persistence.*;
 import kea.project.searchservice.domain.blog.entity.BlogEntity;
+import kea.project.searchservice.domain.member.vo.MemberEntityRole;
 import kea.project.searchservice.domain.member.vo.MemberEntityState;
 import kea.project.searchservice.global.common.entity.BaseEntity;
 import lombok.AccessLevel;
@@ -25,7 +25,7 @@ public class MemberEntity extends BaseEntity {
     @Column(name = "birth")
     private LocalDate birth;
 
-    @OneToOne
+    @OneToOne(mappedBy = "member")
     private BlogEntity blog;
 
     @Column(name = "about")
@@ -47,22 +47,29 @@ public class MemberEntity extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private MemberEntityState memberEntityState;
 
+    @Column(name = "role")
+    @Enumerated(EnumType.STRING)
+    private MemberEntityRole memberEntityRole;
+
     @Builder
-    public MemberEntity(LocalDate birth, String about, String nickname, String profileImage, String socialId, String socialType, MemberEntityState memberEntityState) {
+    public MemberEntity(LocalDate birth, String about, String nickname, String profileImage, String socialId, String socialType, MemberEntityState memberEntityState,BlogEntity blog, MemberEntityRole memberEntityRole) {
         this.birth = birth;
         this.about = about;
         this.nickname = nickname;
+        this.blog = blog;
         this.profileImage = profileImage;
+        this.memberEntityRole = memberEntityRole;
         this.socialId = socialId;
         this.socialType = socialType;
         this.memberEntityState = memberEntityState;
     }
 
-    public static MemberEntity of(LocalDate birth, String about, String nickname, String profileImage, String socialId, String socialType, MemberEntityState memberEntityState) {
+    public static MemberEntity of(LocalDate birth, String about, String nickname, String profileImage, String socialId, String socialType, MemberEntityState memberEntityState, MemberEntityRole memberEntityRole) {
         return MemberEntity.builder()
                 .birth(birth)
                 .about(about)
                 .nickname(nickname)
+                .memberEntityRole(memberEntityRole)
                 .profileImage(profileImage)
                 .socialId(socialId)
                 .socialType(socialType)

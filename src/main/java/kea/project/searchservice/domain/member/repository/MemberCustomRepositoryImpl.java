@@ -4,12 +4,9 @@ import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import kea.project.searchservice.api.controller.dto.BlogSearchResponse;
 import kea.project.searchservice.api.controller.dto.MemberSearchResponse;
-import kea.project.searchservice.api.controller.dto.QBlogSearchResponse;
 import kea.project.searchservice.api.controller.dto.QMemberSearchResponse;
-import kea.project.searchservice.api.service.dto.MemberSearchDto;
-import kea.project.searchservice.domain.blog.vo.BlogEntityState;
+import kea.project.searchservice.domain.member.vo.MemberEntityRole;
 import kea.project.searchservice.domain.member.vo.MemberEntityState;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +19,7 @@ import java.util.Objects;
 
 import static kea.project.searchservice.domain.blog.entity.QBlogEntity.blogEntity;
 import static kea.project.searchservice.domain.member.entity.QMemberEntity.memberEntity;
+import static kea.project.searchservice.domain.post.entity.QPostEntity.postEntity;
 
 @Slf4j
 @Repository
@@ -41,9 +39,10 @@ public class MemberCustomRepositoryImpl implements MemberCustomRepository {
                         memberEntity.profileImage
                 ))
                 .from(memberEntity)
+                .leftJoin(memberEntity.blog,blogEntity)
                 .where(
                         memberEntity.memberEntityState.eq(MemberEntityState.ACTIVE).and(
-                                memberEntity.nickname.contains(value))
+                                memberEntity.nickname.contains(value)).and(memberEntity.memberEntityRole.eq(MemberEntityRole.MEMBER))
                 )
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -51,6 +50,7 @@ public class MemberCustomRepositoryImpl implements MemberCustomRepository {
         Long count = jpaQueryFactory
                 .select(memberEntity.count())
                 .from(memberEntity)
+                .leftJoin(memberEntity.blog,blogEntity)
                 .where(
                         memberEntity.memberEntityState.eq(MemberEntityState.ACTIVE).and(
                                         memberEntity.nickname.contains(value))

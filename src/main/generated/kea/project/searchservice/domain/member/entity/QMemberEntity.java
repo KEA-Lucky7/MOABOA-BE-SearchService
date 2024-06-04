@@ -35,6 +35,8 @@ public class QMemberEntity extends EntityPathBase<MemberEntity> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
+    public final EnumPath<kea.project.searchservice.domain.member.vo.MemberEntityRole> memberEntityRole = createEnum("memberEntityRole", kea.project.searchservice.domain.member.vo.MemberEntityRole.class);
+
     public final EnumPath<kea.project.searchservice.domain.member.vo.MemberEntityState> memberEntityState = createEnum("memberEntityState", kea.project.searchservice.domain.member.vo.MemberEntityState.class);
 
     public final StringPath nickname = createString("nickname");
